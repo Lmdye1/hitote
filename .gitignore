@@ -1,0 +1,17 @@
+# Windows desktop build output
+desktop/bin/
+desktop/obj/
+
+# Local editor settings and caches
+.vs/
+*.suo
+*.user
+
+# JavaScript dependencies
+node_modules/
+
+# Logs and operating-system metadata
+*.log
+Thumbs.db
+Desktop.ini
+.DS_Store
