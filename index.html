@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#234d42">
+  <title>ひとて — 片手日本語入力</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="engine.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <a class="brand" href="./index.html"><span class="brand-mark">ひ</span>ひとて<span class="badge">PROTOTYPE</span></a>
+      <span class="save-status" id="save-status">ローカルで動作</span>
+    </header>
+
+    <section class="intro">
+      <p class="eyebrow">ONE HAND, YOUR WORDS.</p>
+      <h1>片手で、ことばを。</h1>
+      <p>かなを選ぶ。候補を選ぶ。あなたに合う入力方法を、ここから。</p>
+    </section>
+
+    <div class="workspace">
+      <section class="card writing" aria-labelledby="writing-title">
+        <div class="section-heading"><h2 id="writing-title"><span class="step">01</span>文章</h2><span id="char-count">0 文字</span></div>
+        <label class="sr-only" for="editor">作成する文章</label>
+        <textarea id="editor" placeholder="ここに文章が入ります。&#10;&#10;右のかなパネルを使うか、ここで普段の日本語入力も使えます。" spellcheck="false"></textarea>
+        <div class="editor-footer"><span>カーソルの位置に入力します</span><button type="button" class="button primary" id="copy">文章をコピー <span aria-hidden="true">↗</span></button></div>
+
+        <div class="composition-area">
+          <div class="section-heading"><h2><span class="step">02</span>入力中のかな</h2><button type="button" class="text-button" id="commit">かなで確定 ↵</button></div>
+          <div class="composition" id="composition" aria-live="polite"><span class="muted">かなを選ぶと、ここに表示されます</span></div>
+          <div class="suggestion-heading"><span>フレーズ候補</span><span>内蔵 ＋ マイ辞書</span></div>
+          <div class="suggestions" id="suggestions" aria-label="フレーズ候補"></div>
+          <p class="fine-print">候補は登録済みの言葉から表示します。自由な漢字変換は、上の文章欄で普段の日本語入力をご利用ください。</p>
+        </div>
+      </section>
+
+      <section class="card input-card" aria-labelledby="input-title">
+        <div class="section-heading"><h2 id="input-title"><span class="step">03</span>かなパネル</h2><span class="small-tag">片手で操作</span></div>
+        <div class="mode-switch" aria-label="入力方法">
+          <button type="button" id="pointer-mode" class="active" aria-pressed="true">マウス・タッチ</button>
+          <button type="button" id="keyboard-mode" aria-pressed="false">左手キーボード</button>
+        </div>
+        <p class="mode-help" id="mode-help">タップで行を選択。フリックなら、そのままかなを入力。</p>
+
+        <div id="keyboard-surface" tabindex="0" aria-label="片手入力パネル。左手キーボードモードでは、行のキーと母音のキーの順に押します。">
+          <div class="kana-grid" id="kana-grid"></div>
+          <div class="gesture-preview" id="gesture-preview" aria-hidden="true"></div>
+          <div class="vowel-area">
+            <div class="vowel-heading"><span id="vowel-label">行を選んでください</span><button type="button" id="cancel-row" class="text-button" disabled>戻る</button></div>
+            <div class="vowels" id="vowels" aria-label="行の文字"></div>
+          </div>
+          <div class="controls">
+            <button type="button" data-action="voice"><span>゛ / ゜</span><kbd>T</kbd></button>
+            <button type="button" data-action="small"><span>小文字</span><kbd>B</kbd></button>
+            <button type="button" data-action="delete" title="直前の1文字を削除（Backspace / 左手入力：R）" aria-keyshortcuts="Backspace"><span>⌫ Backspace</span><kbd>R</kbd></button>
+            <button type="button" data-action="comma"><span>、</span><kbd>G</kbd></button>
+            <button type="button" data-action="period"><span>。</span><kbd>H</kbd></button>
+            <button type="button" data-action="newline"><span>改行</span><kbd>F</kbd></button>
+          </div>
+        </div>
+        <div class="tip" id="input-tip"><span class="tip-icon">↗</span><p>フリックの方向は <b>中央：あ / 左：い / 上：う / 右：え / 下：お</b>。クリックだけでも入力できます。</p></div>
+      </section>
+    </div>
+
+    <details class="card dictionary">
+      <summary><span>マイ辞書 <span class="muted">よく使う文章を、短いよみで</span></span><span aria-hidden="true">＋</span></summary>
+      <div class="dictionary-body">
+        <p>例：「おつ」→「お疲れさまです。」。短いよみを登録すると、少ない操作で入力できます。</p>
+        <form id="phrase-form">
+          <label>よみ<input id="phrase-reading" required maxlength="30" placeholder="おつ" autocomplete="off"></label>
+          <label class="phrase-field">入力する文章<input id="phrase-text" required maxlength="500" placeholder="お疲れさまです。" autocomplete="off"></label>
+          <button class="button primary" type="submit">登録する</button>
+        </form>
+        <p class="form-message" id="form-message" role="status"></p>
+        <ul id="custom-phrases"></ul>
+      </div>
+    </details>
+    <footer class="footer"><span>ひとて / 日本語片手入力の実験室</span><span>通信不要・下書きと辞書はこのブラウザに保存</span></footer>
+    <div id="notice" class="notice" role="status"></div>
+  </main>
+</body>
+</html>
